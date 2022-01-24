@@ -1,0 +1,36 @@
+# Neoastra-Assignment
+
+Brief summary of assignment:-
+   Code attached in cpp file takes in a string as input, after doing finite state parsing it outputs whether given string is a web url or is a name or nothing.
+following are some constraints which I considered while forming finite state model.
+- web urls starting from "http://www." or "https://www." only are considered.
+- after "http://www." or "https://www." only lower case alphabets can come eg (http://www.neoastra.com).
+- web url can only end with ".com", ".org" or ".in".
+- Name can only start with capital alphabet letters and rest of letter must be small alphabets, after white space again same rule follows eg(Shreyash Nannaware).
+- If none of the above follows its nothing.
+
+Below is a state diagram of above description:
+
+       ("http://www." | "https://www.")     
+--->[S0]----------------------------->[S1]
+     |                                 |
+     | (A-Z)                           | (a-z)
+     |                     (a-z)       V 
+     '------------->[S2]------------->[S3]------------------------>[S5]
+                      ^                 |    (.com | .org | .in)   
+                      |           (' ') |                         
+                      |                 V                       
+                      '---------------[S4]
+                           (A-Z)
+
+
+Below is a finite state table:-
+
+State\Input | (http) | (A-Z) | (a-z) | (.com) | (' ') | Exception 
+    S0      |   S1   |   S2  |   -   |   -    |   -   |    -
+    S1      |   -    |   -   |  S3   |   -    |   -   |    -
+    S2      |   -    |   -   |  S3   |   -    |   -   |    -
+    S3      |   -    |   -   |  S3   |   S5   |  S4   |    -
+    S4      |   -    |   S2  |   -   |   -    |   -   |    -
+    S5      |   -    |   -   |   -   |   -    |   -   |    -
+    S6      |	-    |	 -   |   -   |   -    |   -   |    -
